@@ -1,0 +1,138 @@
+<nav class="navbar navbar-inverse">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+
+			<a [routerLink]="['/hospitals']" class="navbar-brand">Hospital List</a>
+		</div>
+		<div class="collapse navbar-collapse" id="myNavbar">
+			<ul class="nav navbar-nav">
+				<li class="active"><a [routerLink]="['/users']">Home</a></li>
+				<li><a data-toggle="modal" data-target="#myModal" (click)="addNew()">Add New Hospital</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<!-- side menu -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-2 col-sm-4 sidebar1">
+			<div class="logo">
+				<img src="http://lorempixel.com/output/people-q-g-64-64-1.jpg" class="img-responsive center-block"
+					alt="Logo">
+			</div>
+			<br>
+			<div class="left-navigation">
+				<ul class="list">
+					<h5><strong>WHEREABOUTS</strong></h5>
+					<li>Admin</li>
+					<li>Hospital</li>
+					<li>Doctor</li>
+					<li>Patient</li>
+					<li>Pharmacy</li>
+				</ul>
+				<br>
+				<ul class="list">
+					<h5><strong>HOBBIES</strong></h5>
+					<li>Hiking</li>
+					<li>Rafting</li>
+					<li>Badminton</li>
+					<li>Tennis</li>
+					<li>Sketching</li>
+					<li>Horse Riding</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-md-10 col-sm-8 main-content">
+				<input [(ngModel)]="searchText" placeholder="enter search term here"  class="form-control" >
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Phone</th>
+						<th>Fax</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let u of users | filter : searchText | paginate: { itemsPerPage: 5, currentPage: p }">
+						<td>{{u.hospId }}</td>
+						<td>{{u.name }}</td>
+						<td>{{u.email }}</td>
+						<td>{{u.phone }}</td>
+						<td>{{u.fax }}</td>
+						<td><button class="btn btn-info" (click)="editHospital(u)" data-toggle="modal"
+								data-target="#update">
+								<span class="glyphicon glyphicon-edit"></span> Edit</button>&nbsp;&nbsp;&nbsp;
+							<button class="btn btn-danger" (click)="deleteHospital(u)">
+								<span class="glyphicon glyphicon-trash"></span> Delete</button></td>
+							</tr>
+						</tbody>
+					</table>
+					<pagination-controls (pageChange)="p = $event"></pagination-controls>
+				</div>
+
+
+		<!-- Modal -->
+		<div id="myModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Add Hospital</h4>
+					</div>
+					<div class="modal-body">
+						Name: <input type="text" class="form-control" [(ngModel)]="hospital.name" />
+
+						Email: <input type="text" class="form-control" [(ngModel)]="hospital.email" />
+
+						Contact: <input type="text" class="form-control" [(ngModel)]="hospital.phone" />
+
+						Fax: <input type="text" class="form-control" [(ngModel)]="hospital.fax" />
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" (click)="saveHospital(hospital)"
+							data-dismiss="modal">Save</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- edit -->
+		<div id="update" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Edit Hospital</h4>
+					</div>
+					<div class="modal-body">
+						Id: <input type="text" class="form-control" [disabled]=true [(ngModel)]="hospital.hospId" />
+
+						Name: <input type="text" class="form-control" [(ngModel)]="hospital.name" />
+
+						Email: <input type="text" class="form-control" [(ngModel)]="hospital.email" />
+
+						Contact: <input type="text" class="form-control" [(ngModel)]="hospital.phone" />
+
+						Fax: <input type="text" class="form-control" [(ngModel)]="hospital.fax" />
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" (click)="saveHospital(hospital)"
+							data-dismiss="modal">Update</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
